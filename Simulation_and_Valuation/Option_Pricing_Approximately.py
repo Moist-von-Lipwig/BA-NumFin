@@ -111,14 +111,20 @@ def Barrier_Opt_Approx(PriceProcesses, Strike, Barrier, Interest, Time, Call_Put
                 # Call-Down-In
                 In_Vector = np.transpose([np.any(PP < H, 1)])
                 DownInPP = In_Vector * PP
-                Value = (DownInPP[:, -1] - K) * (DownInPP[:, -1] - K >= 0)
-                return np.exp(-r * T) * np.mean(Value)
+                Value_uncensored = DownInPP[:, -1] - K
+                Value = Value_uncensored * (Value_uncensored >= 0)
+                Value_mean = np.exp(-r * T) * np.mean(Value)
+                Variance = np.var(Value, ddof=1)
+                return Value_mean, Variance
             elif In_Out == 'Out':
                 # Call-Down-Out
                 Out_Vector = np.transpose([np.all(PP > H, 1)])
                 DownOutPP = Out_Vector * PP
-                Value = (DownOutPP[:, -1] - K) * (DownOutPP[:, -1] - K >= 0)
-                return np.exp(-r * T) * np.mean(Value)
+                Value_uncensored = DownOutPP[:, -1] - K
+                Value = (Value_uncensored) * (Value_uncensored >= 0)
+                Value_mean = np.exp(-r * T) * np.mean(Value)
+                Variance = np.var(Value, ddof=1)
+                return Value_mean, Variance
         elif Down_Up == 'Up':
             if In_Out == 'In':
                 # Call-Up-In
