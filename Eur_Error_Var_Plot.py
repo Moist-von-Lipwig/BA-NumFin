@@ -22,14 +22,15 @@ Exercise_Time = 1
 Eur_Call_Val = OpPrAn.EUR_Opt_Analytic(Start_Price, Interest, Volatility, Strike, Exercise_Time, 'Call')
 print("The analytical Value of the European Call is: %f" % Eur_Call_Val)
 
-Paths = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
+#Paths = [100, 1000, 10000, 100000, 1000000, 10000000]
+Paths = [100, 1000, 10000, 100000, 1000000]
 Number_Estimations = np.size(Paths)
 dimensions = 1
 
 # For Faure
 Faure_prime = 3
 
-# For shifted Halton
+# For shifted Halton; must be multiple of 10
 Number_Shifts = 10
 rQMC_shift_rand_Vector = np.array([np.random.uniform(0, 1, dimensions) for shift in range(Number_Shifts)])
 
@@ -122,19 +123,24 @@ for N in Paths:
     # # # Randomized Quasi Monte Carlo Method with Halton sequence shifted several times # # #
     start_time = time.time()
     # Generate randomized quasi random numbers
-    shifted_Values = np.zeros(Number_Shifts)
-    shifted_Variance = np.zeros(Number_Shifts)
-    for shift in range(Number_Shifts):
-        r2_Halton_Sequence = np.add(Halton_Sequence.T, rQMC_shift_rand_Vector[shift])
+    Halton_Sequence_for_Shift = Hlt.Halton_Sequence(dimensions, N // Number_Shifts)[:, 1:]
+    Halton_Sequence_norm = norm.ppf(Halton_Sequence_for_Shift)
+    # Transform them into a brownian motion
+    Brownian_Motion = BrMo.Forward_Method(Halton_Sequence_norm, Timepoints_for_BM)
+    # Generate price processes based on the brownian motion
+    Price_Process = OpPrAp.PriceProcesses(Start_Price, Interest, Volatility, Timepoints_for_PP, Brownian_Motion)
+    for shift in range(Number_Shifts - 1):
+        r2_Halton_Sequence = np.add(Halton_Sequence_for_Shift.T, rQMC_shift_rand_Vector[shift])
         r2_Halton_Sequence = norm.ppf(r2_Halton_Sequence.T % 1)
         # Transform them into a brownian motion
         Brownian_Motion = BrMo.Forward_Method(r2_Halton_Sequence, Timepoints_for_BM)
         # Generate price processes based on the brownian motion
-        Price_Process = OpPrAp.PriceProcesses(Start_Price, Interest, Volatility, Timepoints_for_PP, Brownian_Motion)
-        # Calculate payoff for each brownian motion and estimate mean and variance
-        shifted_Values[shift], shifted_Variance[shift] = OpPrAp.EUR_Opt_Approx(Price_Process, Strike, Interest,
-                                                                               Exercise_Time, 'Call')
-    rQMC_2Hlt_Solutions[i], rQMC_2Hlt_Variances[i] = np.mean(shifted_Values), np.var(shifted_Variance, ddof=1)
+        Price_Process_shifted = OpPrAp.PriceProcesses(Start_Price, Interest, Volatility, Timepoints_for_PP,
+                                                      Brownian_Motion)
+        Price_Process = np.append(Price_Process, Price_Process_shifted, axis=0)
+    # Calculate payoff for each brownian motion and estimate mean and variance
+    rQMC_2Hlt_Solutions[i], rQMC_2Hlt_Variances[i] = OpPrAp.EUR_Opt_Approx(Price_Process, Strike, Interest,
+                                                                           Exercise_Time, 'Call')
     print("--- %d Simulations for rQMC-Method with Halton shifted several times done in %s seconds ---"
           % (N, time.time() - start_time))
 
