@@ -3,8 +3,10 @@ import scipy.stats.mstats as geom
 from scipy.stats import norm
 import math
 
+
 def PriceProcesses(S0, mu, sigma, times, W):
     return S0 * np.exp((mu - 0.5 * sigma ** 2) * times + sigma * W)
+
 
 def EUR_Opt_Approx(PriceProcesses, Strike, Interest, Endtime, Call_Put):
     PP, K, r, T = PriceProcesses, Strike, Interest, Endtime
@@ -24,6 +26,7 @@ def EUR_Opt_Approx(PriceProcesses, Strike, Interest, Endtime, Call_Put):
     else:
         print('Error')
         return 0
+
 
 def Asian_Opt_Approx(PriceProcesses, Strike, Interest, Time, Call_Put, Disc_Cont, Arith_Geom):
     PP, K, r, T = PriceProcesses, Strike, Interest, Time
@@ -74,6 +77,7 @@ def Asian_Opt_Approx(PriceProcesses, Strike, Interest, Time, Call_Put, Disc_Cont
                 print('To be implemented')
                 return 0
 
+
 def Lookback_Opt_Approx(PriceProcesses, Strike, Interest, Time, Call_Put, Fix_Var):
     PP, K, r, T = PriceProcesses, Strike, Interest, Time
     if Call_Put == 'Call':
@@ -102,6 +106,7 @@ def Lookback_Opt_Approx(PriceProcesses, Strike, Interest, Time, Call_Put, Fix_Va
             # Put-Variable
             print('To be implemented')
             return 0
+
 
 def Barrier_Opt_Approx(PriceProcesses, Strike, Barrier, Interest, Time, Call_Put, Down_Up, In_Out):
     PP, K, r, T, H = PriceProcesses, Strike, Interest, Time, Barrier
