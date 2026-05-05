@@ -16,5 +16,3 @@ def VanDerCorput_Sequence(prime, amount):
     rad_vec = 1/p ** np.arange(1, lengthList+1)
     out = BPExp @ rad_vec
     return out
-
-#print(VanDerCorput(2,7))

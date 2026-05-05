@@ -10,29 +10,25 @@ from Minimal_Discrepancy_Sequences import (Halton as Hlt,
 
 total_time = time.time()
 
-# Parameters for Asian Option
 Start_Price = 100
 Interest = 0.05
 Volatility = 0.2
 Strike = 60
 Exercise_Time = 1
-dimensions = 12  # The geom. average is taken over dimensions + 1 many timepoints
+dimensions = 12
 
 Paths = [100, 1000, 10000, 100000, 1000000]
 #Paths = [100, 1000, 10000, 100000]
 Number_Paths = np.size(Paths)
-Number_Estimations = 100  # per number  of paths
+Number_Estimations = 100
 
-# For shifted Halton; must be multiple of 10
 Number_Shifts = 10
 
-# For randomized Faure; must be greater than dimensions
 rand_Faure_prime = 13
 
-Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions  # Excluding leading zeros
-Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)  # Including leading zeros
+Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions
+Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)
 
-# Allocating memory for the solutions
 MC_Solutions = np.zeros(Number_Estimations)
 MC_Variances = np.zeros(Number_Paths)
 
@@ -45,7 +41,7 @@ rQMC_2Hlt_Variances = np.zeros(Number_Paths)
 rQMC_Fre_Solutions = np.zeros(Number_Estimations)
 rQMC_Fre_Variances = np.zeros(Number_Paths)
 
-i = 0  # For indexing the solution lists
+i = 0
 for N in Paths:
     start_time = time.time()
     # Generating Halton
@@ -112,7 +108,6 @@ for N in Paths:
         rQMC_Fre_Solutions[j], _ = OpPrAp.Asian_Opt_Approx(Price_Process, Strike, Interest, Exercise_Time,
                                                            'Call', 'Discrete', 'Geometric')
 
-    # Collecting estimated Variances
     MC_Variances[i] = np.var(MC_Solutions, ddof=1)
     rQMC_1Hlt_Variances[i] = np.var(rQMC_1Hlt_Solutions, ddof=1)
     rQMC_2Hlt_Variances[i] = np.var(rQMC_2Hlt_Solutions, ddof=1)
@@ -122,9 +117,6 @@ for N in Paths:
 
 print("--- Total time: %s seconds ---" % (time.time() - total_time))
 
-# # # Printing the solutions # # #
-
-# suppresses scientific notation in log for readability
 np.set_printoptions(suppress=True)
 
 print("--- Variance MC ---")
@@ -145,9 +137,6 @@ print(rQMC_Fre_Variances)
 print("Variance reduction")
 print(rQMC_Fre_Variances / MC_Variances)
 
-# # # Generating the variance plot # # #
-
-# Adjust font sizes for both plots
 plt.rcParams["axes.titlesize"] = 30
 plt.rcParams["axes.labelsize"] = 25
 plt.rcParams["legend.fontsize"] = 20

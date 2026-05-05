@@ -12,7 +12,6 @@ from Minimal_Discrepancy_Sequences import (Halton as Hlt,
 
 total_time = time.time()
 
-# Parameters for Lookback Option
 Start_Price = 100
 Interest = 0.1
 Volatility = 0.20
@@ -28,21 +27,17 @@ Paths = [10, 100, 1000, 10000, 100000]
 Number_Paths = np.size(Paths)
 dimensions = 360
 
-# For Faure; must be greater than dimensions
 Faure_prime = 367
 
-# For shifted Halton
 Number_Shifts = 10
 rQMC_shift_rand_Vector = np.array([np.random.uniform(0, 1, dimensions) for shift in range(Number_Shifts)])
 
-# For randomized Faure; must be greater than dimensions
 rand_Faure_prime = 367
 Permutation = rP.gen_rand_perm(rand_Faure_prime - 1)
 
-Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions  # Excluding leading zeros
-Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)  # Including leading zeros
+Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions
+Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)
 
-# Allocating memory for the solutions
 MC_Solutions = np.zeros(Number_Paths)
 
 QMC_Hlt_Solutions = np.zeros(Number_Paths)
@@ -55,7 +50,7 @@ rQMC_2Hlt_Solutions = np.zeros(Number_Paths)
 
 rQMC_Fre_Solutions = np.zeros(Number_Paths)
 
-i = 0  # For indexing the solution lists
+i = 0
 for N in Paths:
 
     # # # Monte Carlo Method # # #
@@ -160,9 +155,6 @@ print("--- Total time: %s seconds ---" % (time.time() - total_time))
 
 print(MC_Solutions)
 
-# # # Generating the error plot # # #
-
-# Adjust font sizes for both plots
 plt.rcParams["axes.titlesize"] = 30
 plt.rcParams["axes.labelsize"] = 25
 plt.rcParams["legend.fontsize"] = 20

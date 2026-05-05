@@ -12,13 +12,12 @@ from Minimal_Discrepancy_Sequences import (Halton as Hlt,
 
 total_time = time.time()
 
-# Parameters for Asian Option
 Start_Price = 100
 Interest = 0.05
 Volatility = 0.2
 Strike = 60
 Exercise_Time = 1
-dimensions = 12  # The geom. average is taken over dimensions + 1 many timepoints
+dimensions = 12
 
 Asia_Call_Val = OpPrAn.disc_geom_Asian_Opt_Analytic(Start_Price, Interest, Volatility, Strike, Exercise_Time,
                                                     dimensions,
@@ -30,22 +29,18 @@ Paths = [100, 1000, 10000, 100000, 1000000, 10000000]
 # Paths = [100, 1000, 10000, 100000, 1000000]
 Number_Paths = np.size(Paths)
 
-# For Faure; must be greater than dimensions
 Faure_prime = 13
 
-# For shifted Halton
 Number_Shifts = 10
 rQMC_shift_rand_Vector = np.array([np.random.uniform(0, 1, dimensions) for shift in range(Number_Shifts)])
 
-# For randomized Faure; must be greater than dimensions
 rand_Faure_prime = 13
 # Permutation = rP.gen_rand_perm(rand_Faure_prime - 1)
 Permutation = np.random.permutation(rand_Faure_prime)
 
-Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions  # Excluding leading zeros
-Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)  # Including leading zeros
+Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions
+Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)
 
-# Allocating memory for the solutions
 MC_Solutions = np.zeros(Number_Paths)
 
 QMC_Hlt_Solutions = np.zeros(Number_Paths)
@@ -58,7 +53,7 @@ rQMC_2Hlt_Solutions = np.zeros(Number_Paths)
 
 rQMC_Fre_Solutions = np.zeros(Number_Paths)
 
-i = 0  # For indexing the solution lists
+i = 0
 for N in Paths:
 
     # # # Monte Carlo Method # # #
@@ -164,11 +159,8 @@ for N in Paths:
 
 print("--- Total time: %s seconds ---" % (time.time() - total_time))
 
-# # # Generating the error plot # # #
-
 np.set_printoptions(suppress=True)
 
-# Adjust font sizes for both plots
 plt.rcParams["axes.titlesize"] = 30
 plt.rcParams["axes.labelsize"] = 25
 plt.rcParams["legend.fontsize"] = 20

@@ -6,7 +6,6 @@ import math
 
 def EUR_Opt_Analytic(S0, mu, sigma, Strike, Endtime, Call_Put):
     K, T = Strike, Endtime
-    # math.log(x) returns ln(x)
     d_1 = (math.log(S0 / K) + (mu + sigma ** 2 / 2) * T) / (sigma * math.sqrt(T))
     d_2 = d_1 - (sigma * math.sqrt(T))
     if Call_Put == 'Call':
@@ -30,7 +29,7 @@ def disc_geom_Asian_Opt_Analytic(S0, mu, sigma, Strike, Endtime, number_timepoin
 
 def var_Lookback_Opt_Analytic(S0, mu, sigma, Endtime):
     # Only for Calls
-    min = S0  # min could later be used to compute prices during the run time of the option
+    min = S0
     T = Endtime
     d_1 = (math.log(S0/min) + mu * T + sigma ** 2 * T / 2) / (sigma * math.sqrt(T))
     d_2 = d_1 - sigma * math.sqrt(T)
@@ -41,7 +40,7 @@ def var_Lookback_Opt_Analytic(S0, mu, sigma, Endtime):
 
 def fix_Lookback_Opt_Analytic(S0, mu, sigma, Strike, Endtime):
     # Only for Calls
-    Max = S0 # Max could later be used to compute prices during the run time of the option
+    Max = S0
     K, T = Strike, Endtime
     if K >= Max:
         d_1 = (math.log(S0 / K) + mu * T + sigma ** 2 * T / 2) / (sigma * math.sqrt(T))

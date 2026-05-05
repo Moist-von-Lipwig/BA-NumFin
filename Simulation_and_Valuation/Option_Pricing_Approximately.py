@@ -14,7 +14,6 @@ def EUR_Opt_Approx(PriceProcesses, Strike, Interest, Endtime, Call_Put):
         Value_uncensored = PP[:, -1] - K
         Value = (Value_uncensored) * (Value_uncensored >= 0)
         Value_mean = np.exp(-r * 1) * np.mean(Value)
-        # Using sample variance -> meaning division by n-1 (n-ddof)
         Variance = np.var(Value, ddof=1)
         return Value_mean, Variance
     elif Call_Put == 'Put':
