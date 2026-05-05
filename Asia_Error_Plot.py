@@ -23,7 +23,8 @@ dimensions = 12  # The geom. average is taken over dimensions + 1 many timepoint
 Asia_Call_Val = OpPrAn.disc_geom_Asian_Opt_Analytic(Start_Price, Interest, Volatility, Strike, Exercise_Time,
                                                     dimensions,
                                                     1)
-print("The analytical Value of the discrete arithmetic Asian Call Option is: %f" % Asia_Call_Val)
+print("The analytical Value of the discrete arithmetic Asian Call Option is:")
+print(Asia_Call_Val)
 
 Paths = [100, 1000, 10000, 100000, 1000000, 10000000]
 # Paths = [100, 1000, 10000, 100000, 1000000]

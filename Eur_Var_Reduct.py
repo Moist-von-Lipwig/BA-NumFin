@@ -18,8 +18,8 @@ Strike = 60
 Exercise_Time = 1
 dimensions = 1
 
-Paths = [100, 1000, 10000, 100000, 1000000]
-# Paths = [100, 1000, 10000, 100000]
+# Paths = [100, 1000, 10000, 100000, 1000000]
+Paths = [100, 1000, 10000, 100000]
 Number_Paths = np.size(Paths)
 Number_Estimations = 100  # per number  of paths
 
@@ -156,19 +156,22 @@ plt.rcParams["ytick.labelsize"] = 20
 
 x_Values = Paths
 
+# Theoretical_Convergence = np.ones(Number_Paths) / Paths
+# plt.loglog(x_Values, Theoretical_Convergence, color="b", marker="*", label='MC-Methode (theoretische Konvergenz)')
+
 MC_Graph = MC_Variances
-plt.loglog(x_Values, MC_Graph / Paths, color="b", marker="o", label='MC-Methode')
+plt.loglog(x_Values, MC_Graph, color="b", marker="o", label='MC-Methode')
 
 rQMC_1Hlt_Graph = rQMC_1Hlt_Variances
-plt.loglog(x_Values, rQMC_1Hlt_Graph / Paths, color="y", marker="<",
+plt.loglog(x_Values, rQMC_1Hlt_Graph, color="y", marker="<",
            label='rQMC-Methode mit einfacher Verschiebung (Halton)')
 
 rQMC_2Hlt_Graph = rQMC_2Hlt_Variances
-plt.loglog(x_Values, rQMC_2Hlt_Graph / Paths, color="c", marker=">",
+plt.loglog(x_Values, rQMC_2Hlt_Graph, color="c", marker=">",
            label='rQMC-Methode mit multipler Verschiebung (Halton)')
 
 rQMC_Fre_Graph = rQMC_Fre_Variances
-plt.loglog(x_Values, rQMC_Fre_Graph / Paths, color="m", marker="^",
+plt.loglog(x_Values, rQMC_Fre_Graph, color="m", marker="^",
            label='rQMC-Methode mit Permutation (Faure)')
 
 plt.title("Geschätzte Varianz des Schätzers für die Europäische Call Option")
