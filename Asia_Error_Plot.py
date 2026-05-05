@@ -18,27 +18,26 @@ Interest = 0.05
 Volatility = 0.2
 Strike = 60
 Exercise_Time = 1
-dimensions = 4  # The geom. average is taken over dimensions + 1 many timepoints
+dimensions = 12  # The geom. average is taken over dimensions + 1 many timepoints
 
 Asia_Call_Val = OpPrAn.disc_geom_Asian_Opt_Analytic(Start_Price, Interest, Volatility, Strike, Exercise_Time,
                                                     dimensions,
                                                     1)
 print("The analytical Value of the discrete arithmetic Asian Call Option is: %f" % Asia_Call_Val)
 
-# Paths = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
-Paths = [10, 100, 1000, 10000, 100000, 1000000]
+Paths = [100, 1000, 10000, 100000, 1000000, 10000000]
+# Paths = [100, 1000, 10000, 100000, 1000000]
 Number_Paths = np.size(Paths)
-dimensions = 8
 
 # For Faure; must be greater than dimensions
-Faure_prime = 5
+Faure_prime = 13
 
 # For shifted Halton
 Number_Shifts = 10
 rQMC_shift_rand_Vector = np.array([np.random.uniform(0, 1, dimensions) for shift in range(Number_Shifts)])
 
 # For randomized Faure; must be greater than dimensions
-rand_Faure_prime = 7
+rand_Faure_prime = 13
 # Permutation = rP.gen_rand_perm(rand_Faure_prime - 1)
 Permutation = np.random.permutation(rand_Faure_prime)
 
@@ -166,6 +165,8 @@ print("--- Total time: %s seconds ---" % (time.time() - total_time))
 
 # # # Generating the error plot # # #
 
+np.set_printoptions(suppress=True)
+
 # Adjust font sizes for both plots
 plt.rcParams["axes.titlesize"] = 30
 plt.rcParams["axes.labelsize"] = 25
@@ -178,18 +179,24 @@ x_Values = Paths
 MC_Graph = np.abs(MC_Solutions - Asia_Call_Val)
 plt.loglog(x_Values, MC_Graph, color="b", marker="o", label='MC-Methode')
 
+print("--- Result MC ---")
+print(MC_Solutions)
 print("--- Error MC ---")
 print(MC_Graph)
 
 QMC_Hlt_Graph = np.abs(QMC_Hlt_Solutions - Asia_Call_Val)
 plt.loglog(x_Values, QMC_Hlt_Graph, color="r", marker="D", label='QMC-Methode mit Halton')
 
+print("--- Result QMC_Hlt ---")
+print(QMC_Hlt_Solutions)
 print("--- Error QMC_Hlt ---")
 print(QMC_Hlt_Graph)
 
 QMC_Fre_Graph = np.abs(QMC_Fre_Solutions - Asia_Call_Val)
 plt.loglog(x_Values, QMC_Fre_Graph, color="g", marker="s", label='QMC-Methode mit Faure')
 
+print("--- Result QMC_Fre ---")
+print(QMC_Fre_Solutions)
 print("--- Error QMC_Fre ---")
 print(QMC_Fre_Graph)
 
@@ -197,6 +204,8 @@ rQMC_1Hlt_Graph = np.abs(rQMC_1Hlt_Solutions - Asia_Call_Val)
 plt.loglog(x_Values, rQMC_1Hlt_Graph, color="y", marker="<",
            label='rQMC-Methode mit einfacher Verschiebung (Halton)')
 
+print("--- Result rQMC_1Hlt ---")
+print(rQMC_1Hlt_Solutions)
 print("--- Error rQMC_1Hlt ---")
 print(rQMC_1Hlt_Graph)
 
@@ -204,6 +213,8 @@ rQMC_2Hlt_Graph = np.abs(rQMC_2Hlt_Solutions - Asia_Call_Val)
 plt.loglog(x_Values, rQMC_2Hlt_Graph, color="c", marker=">",
            label='rQMC-Methode mit multipler Verschiebung (Halton)')
 
+print("--- Result rQMC_2Hlt ---")
+print(rQMC_2Hlt_Solutions)
 print("--- Error rQMC_2Hlt ---")
 print(rQMC_2Hlt_Graph)
 
@@ -211,6 +222,8 @@ rQMC_Fre_Graph = np.abs(rQMC_Fre_Solutions - Asia_Call_Val)
 plt.loglog(x_Values, rQMC_Fre_Graph, color="m", marker="^",
            label='rQMC-Methode mit Permutation (Faure)')
 
+print("--- Result rQMC_Fre ---")
+print(rQMC_Fre_Solutions)
 print("--- Error rQMC_Fre ---")
 print(rQMC_Fre_Graph)
 

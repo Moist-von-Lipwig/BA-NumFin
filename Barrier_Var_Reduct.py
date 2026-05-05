@@ -17,11 +17,10 @@ Volatility = 0.2
 Strike = 60
 Barrier = 85
 Exercise_Time = 1
-dimensions = 360  # 5 min for very short run with dim=360
+dimensions = 30
 
-# Paths = [100, 1000, 10000, 100000, 1000000]  # long run ~ X minutes
-# Paths = [100, 1000, 10000, 100000]  # short run ~ 3 minutes
-Paths = [100, 1000, 10000]  # very short run ~ X seconds
+Paths = [100, 1000, 10000, 100000, 1000000]
+#Paths = [100, 1000, 10000, 100000]
 Number_Paths = np.size(Paths)
 Number_Estimations = 100  # per number  of paths
 
@@ -29,7 +28,7 @@ Number_Estimations = 100  # per number  of paths
 Number_Shifts = 10
 
 # For randomized Faure; must be greater than dimensions
-rand_Faure_prime = 367
+rand_Faure_prime = 31
 
 Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions  # Excluding leading zeros
 Timepoints_for_PP = np.arange(dimensions + 1) * (Exercise_Time / dimensions)  # Including leading zeros

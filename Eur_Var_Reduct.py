@@ -18,8 +18,8 @@ Strike = 60
 Exercise_Time = 1
 dimensions = 1
 
-# Paths = [100, 1000, 10000, 100000, 1000000]  # long run ~ 5min
-Paths = [100, 1000, 10000, 100000]  # short run ~20 seconds
+Paths = [100, 1000, 10000, 100000, 1000000]
+# Paths = [100, 1000, 10000, 100000]
 Number_Paths = np.size(Paths)
 Number_Estimations = 100  # per number  of paths
 

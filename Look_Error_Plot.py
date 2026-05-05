@@ -14,29 +14,29 @@ total_time = time.time()
 
 # Parameters for Lookback Option
 Start_Price = 100
-Interest = 0.5
+Interest = 0.1
 Volatility = 0.20
-Strike = 60
+Strike = 100
 Exercise_Time = 1
 
 Look_Call_Val = OpPrAn.fix_Lookback_Opt_Analytic(Start_Price, Interest, Volatility, Strike, Exercise_Time)
 print("The analytical Value of the fixed Lookback Call Option is: %.15g" % Look_Call_Val)
 
 # Paths = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
-Paths = [10, 100, 1000, 10000, 100000, 1000000]
-# Paths = [10, 100, 1000, 10000, 100000]
+# Paths = [10, 100, 1000, 10000, 100000, 1000000]
+Paths = [10, 100, 1000, 10000, 100000]
 Number_Paths = np.size(Paths)
-dimensions = 60
+dimensions = 360
 
 # For Faure; must be greater than dimensions
-Faure_prime = 61
+Faure_prime = 367
 
 # For shifted Halton
 Number_Shifts = 10
 rQMC_shift_rand_Vector = np.array([np.random.uniform(0, 1, dimensions) for shift in range(Number_Shifts)])
 
 # For randomized Faure; must be greater than dimensions
-rand_Faure_prime = 61
+rand_Faure_prime = 367
 Permutation = rP.gen_rand_perm(rand_Faure_prime - 1)
 
 Timepoints_for_BM = np.arange(1, dimensions + 1) / dimensions  # Excluding leading zeros
